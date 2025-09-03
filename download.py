@@ -3,23 +3,33 @@ import ffmpeg
 import os
 
 def download_video(url, output_dir="downloads"):
-    """Downloads video using yt-dlp and returns filename"""
+    """Downloads video using yt-dlp and returns WAV filename"""
+    os.makedirs(output_dir, exist_ok=True)
+
     ydl_opts = {
         "format": "bestaudio/best",
         "outtmpl": f"{output_dir}/%(title)s.%(ext)s",
         "postprocessors": [{
             "key": "FFmpegExtractAudio",
-            "preferredcodec": "wav",  # Convert Opus to WAV first
+            "preferredcodec": "wav",
             "preferredquality": "192"
-        }]
+        }],
+        "restrictfilenames": True,
     }
+
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=True)
-        return f"{output_dir}/{info['title']}.wav"  # Return WAV filename
+        filename = ydl.prepare_filename(info)
+        wav_file = os.path.splitext(filename)[0] + ".wav"
+        return wav_file
 
 def convert_to_mp3(wav_audio, mp3_audio):
     """Converts WAV to MP3 using ffmpeg"""
-    ffmpeg.input(wav_audio).output(mp3_audio, format="mp3", audio_bitrate="128k").run()
+    wav_audio = os.path.abspath(wav_audio)
+    mp3_audio = os.path.abspath(mp3_audio)
+    ffmpeg.input(wav_audio).output(
+        mp3_audio, format="mp3", audio_bitrate="128k"
+    ).run(overwrite_output=True)
     os.remove(wav_audio)  # Remove temporary WAV file
 
 def download_audio(url):
@@ -30,11 +40,11 @@ def download_audio(url):
     return mp3_file
 
 
-video_url = input("Enter YouTube video URL: ").strip()
-audio_file = download_audio(video_url)
+if __name__ == "__main__":
+    video_url = input("Enter YouTube video URL: ").strip()
+    audio_file = download_audio(video_url)
 
-# Save the downloaded audio path for later use
-with open("downloads/audio_path.txt", "w", encoding="utf-8") as f:
-    f.write(audio_file)
-    
-print(f"✅ Audio saved successfully: {audio_file}")
+    with open("downloads/audio_path.txt", "w", encoding="utf-8") as f:
+        f.write(audio_file)
+
+    print(f"✅ Audio saved successfully: {audio_file}")

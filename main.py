@@ -3,7 +3,7 @@
 import os
 import shutil
 from download import download_audio
-from transcribe import load_audio_path, transcribe_audio
+from transcribe import transcribe_audio
 from summarize import (
     load_transcript,
     chunk_transcript,
@@ -40,18 +40,19 @@ def run_pipeline(youtube_url):
     summaries = summarize_chunks(chunks, timestamps)
     print_and_save(summaries, SUMMARY_PATH)
 
-    print(f"\n📄 Transcript: {TRANSCRIPT_PATH}")
-    print(f"📄 Summary: {SUMMARY_PATH}\n")
+    print(f"\n📄 Transcript saved to: {TRANSCRIPT_PATH}")
+    print(f"📄 Summary saved to: {SUMMARY_PATH}\n")
 
 
 def main():
     print("🧠 Welcome to the YouTube Summarizer!")
-    clean_downloads()
 
     while True:
         url = input("🔗 Enter a YouTube video URL (or 'q' to quit): ").strip()
         if url.lower() in {"q", "quit", "exit"}:
             break
+
+        clean_downloads()  # clean only before a new run
 
         try:
             run_pipeline(url)
@@ -61,12 +62,14 @@ def main():
         again = input("\n🔁 Do you want to summarize another video? (y/n): ").strip().lower()
         if again != 'y':
             break
-        else:
-            clean_downloads()
 
-    print("\n🧹 Cleaning up session files...")
-    clean_downloads()
-    print("✅ Session ended. All temporary files removed.")
+    # Instead of deleting, ask user
+    delete = input("\n🧹 Do you want to delete all session files? (y/n): ").strip().lower()
+    if delete == "y":
+        clean_downloads()
+        print("✅ Session files removed.")
+    else:
+        print(f"📂 Files are available in the '{DOWNLOADS_DIR}' folder.")
 
 
 if __name__ == "__main__":
