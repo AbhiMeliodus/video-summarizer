@@ -122,3 +122,14 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+
+# This is where collectstatic will copy all static files
+import os
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# Keep your app-level static files discovery
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "core", "static"),
+]

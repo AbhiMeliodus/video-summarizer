@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}ASUMMARIZE{% endblock %}</title>
+    {% load static %}
+    <style>
+        :root {
+            --bg: #f0f4f8;
+            --card-bg: #ffffff;
+            --text: #1a202c;
+            --accent: #2c7a7b;
+            --accent-hover: #285e61;
+            --error: #e53e3e;
+        }
+        body.dark {
+            --bg: #1a202c;
+            --card-bg: #2d3748;
+            --text: #edf2f7;
+            --accent: #63b3ed;
+            --accent-hover: #4299e1;
+            --error: #fc8181;
+        }
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background: transparent; /* removed teal background */
+            color: var(--text);
+            padding: 0.6em 2em;
+            display: flex;
+            justify-content: center; /* center the logo */
+            align-items: center;
+            position: relative; /* for absolute positioning of toggle */
+            border-bottom: 1px solid rgba(0,0,0,0.1); /* subtle divider */
+        }
+        nav .logo {
+            display: flex;
+            align-items: center;
+        }
+        nav .logo img {
+            width: 260px;   /* wider for Google-style look */
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+        }
+        @media (max-width: 600px) {
+            nav .logo img {
+                width: 180px; /* smaller on mobile */
+            }
+        }
+        .mode-toggle {
+            position: absolute;
+            right: 2em; /* pin to far right */
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            color: var(--accent);
+            border: none;
+            padding: 0.4em 0.8em;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        body.dark .mode-toggle {
+            background: var(--accent);
+            color: #1a202c;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 120px);
+            padding: 2em;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 2em;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: var(--accent);
+            margin-bottom: 0.5em;
+        }
+        p {
+            margin-bottom: 1.5em;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.8em;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            margin-bottom: 1em;
+            font-size: 1em;
+        }
+        button {
+            padding: 0.8em 1.2em;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background: var(--accent-hover);
+        }
+        .error {
+            color: var(--error);
+            margin-top: 1em;
+            font-weight: bold;
+        }
+        footer {
+            text-align: center;
+            padding: 1em;
+            font-size: 0.9em;
+            background: var(--card-bg);
+            border-top: 1px solid #e2e8f0;
+        }
+        footer a {
+            color: var(--accent);
+            font-weight: bold;
+            text-decoration: none;
+            position: relative;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        footer a::after {
+            content: attr(title);
+            visibility: hidden;
+            opacity: 0;
+            background: var(--text);
+            color: white;
+            padding: 0.4em 0.6em;
+            border-radius: 6px;
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            transition: opacity 0.2s;
+        }
+        footer a:hover::after {
+            visibility: visible;
+            opacity: 1;
+        }
+        /* 🔥 Fix tooltip background in dark mode */
+        body.dark footer a::after {
+            background: #2d3748;
+            color: #edf2f7;
+            border: 1px solid #63b3ed;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="{% static 'core/logo_slim.png' %}" alt="ASUMMARIZE Logo">
+        </div>
+        <button class="mode-toggle" onclick="toggleMode()">🌙 Toggle Dark Mode</button>
+    </nav>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <p>It is absolutely free, so enjoy! If you have suggestions/feedback, 
+            <a href="mailto:your@email.com" title="Email: abhi.sen11@rediffmail.com | LinkedIn: https://www.linkedin.com/in/abhishek-sengupta-17a130104/">
+                contact me
+            </a>.
+        </p>
+    </footer>
+
+    <script>
+        function setButtonText() {
+            const btn = document.querySelector(".mode-toggle");
+            const isDark = document.body.classList.contains("dark");
+            btn.textContent = isDark ? "☀️ Toggle Light Mode" : "🌙 Toggle Dark Mode";
+        }
+        function toggleMode() {
+            document.body.classList.toggle("dark");
+            setButtonText();
+        }
+        window.onload = function() {
+            if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                document.body.classList.add("dark");
+            }
+            setButtonText();
+        };
+    </script>
+</body>
+</html>
