@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-kk#)n0#z(-o9bgm=#f4)z*_g7u&a)@tgw80cix1_f-3pec7bl1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -126,7 +126,6 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 STATIC_URL = '/static/'
 
 # This is where collectstatic will copy all static files
-import os
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Keep your app-level static files discovery
