@@ -1,1 +1,1 @@
-web: gunicorn videosummarizer.wsgi
+web: gunicorn videosummarizer.wsgi:application --chdir videosummarizer
