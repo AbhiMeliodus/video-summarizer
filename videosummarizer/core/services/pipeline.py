@@ -1,11 +1,14 @@
 import os
 import time
 import shutil
+from django.conf import settings  # ✅ Add this
 from core.services.download import download_audio
 from core.services.transcribe import transcribe_audio
 from core.services.summarize import summarize_transcript
 
-DOWNLOADS_DIR = "downloads"
+
+# ✅ Use absolute path for downloads directory
+DOWNLOADS_DIR = os.path.join(settings.BASE_DIR, "downloads")
 TRANSCRIPT_PATH = os.path.join(DOWNLOADS_DIR, "transcript.txt")
 SUMMARY_PATH = os.path.join(DOWNLOADS_DIR, "summary.txt")
 
