@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>🎥 YouTube Video Summarizer</h1>
+    <p>Enter a YouTube URL below and get an instant transcript and summary.</p>
+
+    <form method="POST" action="{% url 'summarize' %}">
+        {% csrf_token %}
+        <input type="text" name="youtube_url" placeholder="Paste YouTube video link here..." required>
+        <br>
+        <button type="submit">🚀 Summarize Video</button>
+    </form>
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <div class="footer">
+        <p>⚡ Powered by Django & Transformers</p>
+    </div>
+</div>
+{% endblock %}
