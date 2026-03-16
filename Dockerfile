@@ -1,4 +1,4 @@
-# Use Python 3.10 (Hugging Face supports it well)
+# Use Python 3.10-slim (Supports ARM64 and AMD64)
 FROM python:3.10-slim
 
 # Set environment variables
@@ -8,10 +8,9 @@ ENV PYTHONUNBUFFERED=1
 # Set work directory
 WORKDIR /app
 
-# Install system dependencies (ffmpeg needed for whisper)
+# Install system dependencies (ffmpeg needed for yt-dlp/audio extraction)
 RUN apt-get update && apt-get install -y \
     ffmpeg \
-    libsndfile1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install

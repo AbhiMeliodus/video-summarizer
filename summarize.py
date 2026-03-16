@@ -1,18 +1,15 @@
 import os
 import re
-import warnings
 from datetime import timedelta
-from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
+from groq import Groq
+from dotenv import load_dotenv
 
-# Suppress warnings
-warnings.filterwarnings("ignore")
+load_dotenv()
 
-# Use a reliable summarization model
-model_name = "facebook/bart-large-cnn"
-print("🔄 Loading summarization model...")
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-summarizer = pipeline("summarization", model=model, tokenizer=tokenizer)
+# Initialize Groq client
+client = Groq(
+    api_key=os.environ.get("GROQ_API_KEY"),
+)
 
 TRANSCRIPT_PATH = "downloads/transcription.txt"
 SUMMARY_PATH = "downloads/transcription_summary.txt"
@@ -72,9 +69,22 @@ def chunk_transcript(lines, max_words=120):
 
 def summarize_chunks(chunks, timestamps):
     summaries = []
+    print(f"🧠 Summarizing {len(chunks)} chunks using Groq API...")
     for idx, chunk in enumerate(chunks):
         try:
-            summary = summarizer(chunk, max_length=130, min_length=40, do_sample=False)[0]['summary_text']
+            prompt = f"Summarize the following transcript segment. Be concise but maintain all key points. Do not add conversational intro/outro text:\n\n{chunk}"
+            
+            completion = client.chat.completions.create(
+                model="llama-3.1-8b-instant",
+                messages=[
+                    {"role": "system", "content": "You are a professional video summarizer. Provide concise, direct summaries."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.5,
+                max_tokens=150,
+            )
+            
+            summary = completion.choices[0].message.content.strip()
             summaries.append((timestamps[idx], summary))
         except Exception as e:
             print(f"⚠️ Skipped chunk {idx+1} due to error: {e}")
