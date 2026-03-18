@@ -22,18 +22,21 @@ RUN pip install -r requirements.txt
 COPY . /app/
 
 # Create a non-root user for Choreo
-# Choreo often requires a user with a specific UID range (10000-20000)
 RUN useradd -u 10014 choreo-user
 RUN chown -R 10014:10014 /app
+
+# Set WORKDIR to the Django project root
+WORKDIR /app/videosummarizer
 
 # Switch to the non-root user
 USER 10014
 
 # Collect static files
-RUN python videosummarizer/manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
 
 # Expose port
 EXPOSE 8080
 
 # Run Gunicorn
-CMD ["sh", "-c", "gunicorn videosummarizer.wsgi:application --bind 0.0.0.0:${PORT:-8080} --workers 2"]
+# Binding strictly to 8080 to match component.yaml
+CMD ["gunicorn", "videosummarizer.wsgi:application", "--bind", "0.0.0.0:8080", "--workers", "2"]
