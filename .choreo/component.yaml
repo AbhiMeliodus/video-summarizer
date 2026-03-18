@@ -1,4 +1,4 @@
-schemaVersion: 1.0
+schemaVersion: 1.1
 type: service
 name: Assumarize
 description: Video Summarizer App
@@ -12,3 +12,8 @@ spec:
       - name: http
         port: 8080
         protocol: http
+  endpoints:
+    - name: Web App
+      port: 8080
+      type: http
+      networkVisibility: Public
