@@ -1,4 +1,4 @@
-schemaVersion: 1.1
+schemaVersion: 1.0
 type: service
 name: Assumarize
 description: Video Summarizer App
@@ -7,10 +7,3 @@ spec:
     docker:
       dockerfile: Dockerfile
       context: .
-  endpoints:
-    - name: web-app
-      networkVisibility: Public
-      service:
-        basePath: /
-        port: 8080
-        type: REST
