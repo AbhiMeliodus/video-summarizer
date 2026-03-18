@@ -9,3 +9,8 @@ __pycache__/
 *.gitignore
 Procfile
 .env
+venv/
+Asummarize/
+video-summarizer/
+downloads/
+passenger_wsgi.py
