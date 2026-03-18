@@ -24,8 +24,9 @@ COPY . /app/
 # Collect static files
 RUN python videosummarizer/manage.py collectstatic --noinput
 
-# Expose port
-EXPOSE 7860
+# Expose port (Railway will provide the $PORT env var)
+EXPOSE 8080
 
 # Run Gunicorn (Django entry point)
-CMD ["gunicorn", "videosummarizer.wsgi:application", "--bind", "0.0.0.0:7860", "--workers", "2"]
+# Using $PORT env var which Railway injects
+CMD ["sh", "-c", "gunicorn videosummarizer.wsgi:application --bind 0.0.0.0:${PORT:-8080} --workers 2"]

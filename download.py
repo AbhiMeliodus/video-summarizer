@@ -15,6 +15,14 @@ def download_video(url, output_dir="downloads"):
             "preferredquality": "192"
         }],
         "restrictfilenames": True,
+        # Added to bypass potential cloud IP blocks & bot detection
+        "extractor_args": {
+            "youtube": {
+                "player_client": ["default", "-android_sdkless"]
+            }
+        },
+        "quiet": False,
+        "no_warnings": False,
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
