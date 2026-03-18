@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1
 # Set work directory
 WORKDIR /app
 
-# Install system dependencies (ffmpeg needed for yt-dlp/audio extraction)
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
@@ -21,12 +21,19 @@ RUN pip install -r requirements.txt
 # Copy project files
 COPY . /app/
 
+# Create a non-root user for Choreo
+# Choreo often requires a user with a specific UID range (10000-20000)
+RUN useradd -u 10014 choreo-user
+RUN chown -R 10014:10014 /app
+
+# Switch to the non-root user
+USER 10014
+
 # Collect static files
 RUN python videosummarizer/manage.py collectstatic --noinput
 
-# Expose port (Railway will provide the $PORT env var)
+# Expose port
 EXPOSE 8080
 
-# Run Gunicorn (Django entry point)
-# Using $PORT env var which Railway injects
+# Run Gunicorn
 CMD ["sh", "-c", "gunicorn videosummarizer.wsgi:application --bind 0.0.0.0:${PORT:-8080} --workers 2"]

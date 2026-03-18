@@ -1,6 +1,6 @@
 schemaVersion: 1.0
 type: service
-name: video-summarizer
+name: Assumarize
 description: Video Summarizer App
 spec:
   build:
