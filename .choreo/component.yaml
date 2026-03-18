@@ -13,7 +13,8 @@ spec:
         port: 8080
         protocol: http
   endpoints:
-    - name: Web App
+    - name: web-app
       port: 8080
-      type: http
+      type: REST
       networkVisibility: Public
+      context: /
