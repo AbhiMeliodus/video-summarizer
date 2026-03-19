@@ -15,6 +15,13 @@ def download_video(url, output_dir="downloads"):
             "preferredquality": "192"
         }],
         "restrictfilenames": True,
+        "extractor_args": {
+            "youtube": {
+                "player_client": ["default", "-android_sdkless"]
+            }
+        },
+        "quiet": False,
+        "no_warnings": False,
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
