@@ -1,1 +1,1 @@
-web: gunicorn videosummarizer.wsgi:application --chdir videosummarizer
+web: gunicorn videosummarizer.wsgi:application --chdir videosummarizer --bind 0.0.0.0:8080 --workers 2
