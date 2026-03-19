@@ -7,3 +7,9 @@ spec:
     docker:
       dockerfile: Dockerfile
       context: .
+  endpoints:
+    - name: web-app
+      port: 8080
+      type: REST
+      networkVisibility: Public
+      context: /
