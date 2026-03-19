@@ -4,8 +4,8 @@
 
 {% block content %}
 <div class="card">
-    <h1>🎥 YouTube Video Summarizer</h1>
-    <p>Enter a YouTube URL below and get an instant transcript and summary.</p>
+    <h1>🎥 ASUMMARIZE</h1>
+    <p>YouTube Video Summarizer: Enter a URL below to get an instant transcript and summary via Groq API.</p>
 
     <form method="POST" action="{% url 'summarize' %}">
         {% csrf_token %}
@@ -19,7 +19,7 @@
     {% endif %}
 
     <div class="footer">
-        <p>⚡ Powered by Django & Transformers</p>
+        <p>⚡ Powered by Django & Groq</p>
     </div>
 </div>
 {% endblock %}
