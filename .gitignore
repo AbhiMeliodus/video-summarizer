@@ -1,3 +1,10 @@
+# Legacy / platform-specific (not needed in repo)
+Asummarize/
+video-summarizer/
+.choreo/
+Procfile
+runtime.txt
+
 # Python
 __pycache__/
 *.py[cod]
