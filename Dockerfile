@@ -1,41 +1,40 @@
-# Use Python 3.10-slim (Supports ARM64 and AMD64)
+# Lightweight Python base — no ML libraries needed, all inference is via Groq API
 FROM python:3.10-slim
 
-# Set environment variables
+# Prevent .pyc files and enable unbuffered logs
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Set work directory
 WORKDIR /app
 
-# Install system dependencies (ffmpeg required for audio processing)
-RUN apt-get update && apt-get install -y \
+# Install only ffmpeg (the sole system dependency — used by yt-dlp for audio extraction)
+RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install
+# Install Python dependencies
 COPY requirements.txt /app/
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip --no-cache-dir \
+    && pip install --no-cache-dir -r requirements.txt
 
 # Copy project files
 COPY . /app/
 
-# Create a non-root user
-RUN useradd -m appuser
-RUN chown -R appuser:appuser /app
+# Create non-root user and ensure downloads dir is writable
+RUN useradd -m appuser \
+    && mkdir -p /app/videosummarizer/downloads \
+    && chown -R appuser:appuser /app
 
-# Set WORKDIR to the Django project root
 WORKDIR /app/videosummarizer
 
-# Switch to the non-root user
 USER appuser
 
-# Collect static files
+# Collect static files (WhiteNoise serves them — no separate nginx needed)
 RUN python manage.py collectstatic --noinput
 
-# Expose port
 EXPOSE 8080
 
-# Run Gunicorn
-CMD ["gunicorn", "videosummarizer.wsgi:application", "--bind", "0.0.0.0:8080", "--workers", "2", "--timeout", "120"]
+# Single worker — safe for 256MB Koyeb free tier.
+# Timeout 120s — yt-dlp + Groq transcription can take ~30-60s on long videos.
+CMD ["gunicorn", "videosummarizer.wsgi:application", "--bind", "0.0.0.0:8080", "--workers", "1", "--timeout", "120", "--keep-alive", "5"]
