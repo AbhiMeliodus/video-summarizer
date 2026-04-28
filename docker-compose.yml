@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - DJANGO_DEBUG=False
+    volumes:
+      # Persist downloads between container restarts
+      - downloads_data:/app/videosummarizer/downloads
+
+volumes:
+  downloads_data:
