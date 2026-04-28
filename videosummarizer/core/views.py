@@ -1,4 +1,4 @@
-from django.shortcuts import render
+﻿from django.shortcuts import render
 from django.http import HttpResponse, FileResponse
 import os
 from .services.pipeline import run_pipeline
@@ -11,7 +11,7 @@ def summarize_view(request):
             return render(request, "core/index.html", {"error": "Please enter a valid YouTube URL."})
 
         try:
-            # ✅ Correct order: pipeline returns (transcript_path, summary_path)
+            #  Correct order: pipeline returns (transcript_path, summary_path)
             transcript_path, summary_path = run_pipeline(youtube_url)
 
             # Store file paths in session for cleanup later
@@ -52,4 +52,4 @@ def cleanup_session_files(request):
         if os.path.exists(file_path):
             os.remove(file_path)
     request.session.pop("generated_files", None)
-    return HttpResponse("✅ Cleanup complete.")
+    return HttpResponse(" Cleanup complete.")

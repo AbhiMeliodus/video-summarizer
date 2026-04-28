@@ -1,11 +1,11 @@
-import yt_dlp
+﻿import yt_dlp
 import os
 
 def download_audio(url, output_dir=None):
     """
     Downloads audio from a YouTube URL and returns the MP3 file path.
     Uses yt-dlp's built-in FFmpeg postprocessor to extract audio directly
-    as MP3 in one step — avoids the double WAV→MP3 conversion.
+    as MP3 in one step — avoids the double WAVMP3 conversion.
     """
     if output_dir is None:
         output_dir = "downloads"

@@ -1,4 +1,4 @@
-import os
+﻿import os
 import re
 from datetime import timedelta
 from groq import Groq
@@ -66,7 +66,7 @@ def chunk_transcript(lines, max_words=120):
 
 def summarize_chunks(chunks, timestamps):
     summaries = []
-    print(f"🧠 Summarizing {len(chunks)} chunks using Groq API...")
+    print(f" Summarizing {len(chunks)} chunks using Groq API...")
     for idx, chunk in enumerate(chunks):
         try:
             prompt = f"Summarize the following transcript segment. Be concise but maintain all key points. Do not add conversational intro/outro text:\n\n{chunk}"
@@ -84,7 +84,7 @@ def summarize_chunks(chunks, timestamps):
             summary = completion.choices[0].message.content.strip()
             summaries.append((timestamps[idx], summary))
         except Exception as e:
-            print(f"⚠️ Skipped chunk {idx+1} due to error: {e}")
+            print(f"️ Skipped chunk {idx+1} due to error: {e}")
     return summaries
 
 def summarize_transcript(transcript_file, output_file=None):

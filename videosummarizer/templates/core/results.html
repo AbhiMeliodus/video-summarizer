@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 
 {% block title %}Summary Results{% endblock %}
 
@@ -99,12 +99,12 @@
 </style>
 
 <div class="card">
-    <h1>✅ Summary Results</h1>
+    <h1> Summary Results</h1>
     <p class="video-url"><strong>Video URL:</strong> <a href="{{ youtube_url }}" target="_blank">{{ youtube_url }}</a></p>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="showTab('transcript')">📝 Transcript</button>
-        <button class="tab-btn" onclick="showTab('summary')">🧠 Summary</button>
+        <button class="tab-btn active" onclick="showTab('transcript')"> Transcript</button>
+        <button class="tab-btn" onclick="showTab('summary')"> Summary</button>
     </div>
 
     <div id="transcript" class="section active">
@@ -113,8 +113,8 @@
             {{ transcript }}
         </div>
         <div class="button-group">
-            <a class="button" href="{% url 'download_file' transcript_file %}">⬇️ Download</a>
-            <button class="button" onclick="copyText('transcriptBox')">📋 Copy</button>
+            <a class="button" href="{% url 'download_file' transcript_file %}">️ Download</a>
+            <button class="button" onclick="copyText('transcriptBox')"> Copy</button>
         </div>
     </div>
 
@@ -123,15 +123,15 @@
             {{ summary }}
         </div>
         <div class="button-group">
-            <a class="button" href="{% url 'download_file' summary_file %}">⬇️ Download</a>
-            <button class="button" onclick="copyText('summaryBox')">📋 Copy</button>
+            <a class="button" href="{% url 'download_file' summary_file %}">️ Download</a>
+            <button class="button" onclick="copyText('summaryBox')"> Copy</button>
         </div>
     </div>
 
     <div class="footer-links" style="margin-top: 1.5em;">
-        <a href="{% url 'summarize' %}" class="button">🔙 Summarize Another Video</a>
+        <a href="{% url 'summarize' %}" class="button"> Summarize Another Video</a>
         <form action="{% url 'summarize' %}" method="get" style="display:inline;" onsubmit="fetch('/cleanup/');">
-            <button type="submit" class="button danger">🧹 Finish & Clean Up</button>
+            <button type="submit" class="button danger"> Finish & Clean Up</button>
         </form>
     </div>
 </div>

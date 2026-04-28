@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -154,7 +154,7 @@
             visibility: visible;
             opacity: 1;
         }
-        /* 🔥 Fix tooltip background in dark mode */
+        /*  Fix tooltip background in dark mode */
         body.dark footer a::after {
             background: #2d3748;
             color: #edf2f7;
@@ -167,7 +167,7 @@
         <div class="logo">
             <img src="{% static 'core/logo_slim.png' %}" alt="ASUMMARIZE Logo">
         </div>
-        <button class="mode-toggle" onclick="toggleMode()">🌙 Toggle Dark Mode</button>
+        <button class="mode-toggle" onclick="toggleMode()"> Toggle Dark Mode</button>
     </nav>
 
     <div class="container">
@@ -186,7 +186,7 @@
         function setButtonText() {
             const btn = document.querySelector(".mode-toggle");
             const isDark = document.body.classList.contains("dark");
-            btn.textContent = isDark ? "☀️ Toggle Light Mode" : "🌙 Toggle Dark Mode";
+            btn.textContent = isDark ? "️ Toggle Light Mode" : " Toggle Dark Mode";
         }
         function toggleMode() {
             document.body.classList.toggle("dark");

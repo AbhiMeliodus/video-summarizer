@@ -1,13 +1,13 @@
-import os
+﻿import os
 import time
 import shutil
-from django.conf import settings  # ✅ Add this
+from django.conf import settings  #  Add this
 from core.services.download import download_audio
 from core.services.transcribe import transcribe_audio
 from core.services.summarize import summarize_transcript
 
 
-# ✅ Use absolute path for downloads directory
+#  Use absolute path for downloads directory
 DOWNLOADS_DIR = os.path.join(settings.BASE_DIR, "downloads")
 TRANSCRIPT_PATH = os.path.join(DOWNLOADS_DIR, "transcript.txt")
 SUMMARY_PATH = os.path.join(DOWNLOADS_DIR, "summary.txt")
@@ -45,21 +45,21 @@ def run_pipeline(youtube_url: str):
     clean_downloads()
 
     # 1. Download audio
-    print(f"\n🎥 Downloading audio from: {youtube_url}")
+    print(f"\n Downloading audio from: {youtube_url}")
     audio_path = download_audio(youtube_url)
 
     # 2. Ensure audio file exists before transcription
     audio_path = wait_for_file(audio_path)
 
     # 3. Transcribe
-    print("\n📝 Transcribing audio...")
+    print("\n Transcribing audio...")
     transcribe_audio(audio_path, output_file=TRANSCRIPT_PATH)
 
     # 4. Summarize
-    print("\n🧠 Summarizing transcript...")
+    print("\n Summarizing transcript...")
     summarize_transcript(TRANSCRIPT_PATH, output_file=SUMMARY_PATH)
 
     # 5. Return output paths
-    print(f"\n📄 Transcript: {TRANSCRIPT_PATH}")
-    print(f"📄 Summary: {SUMMARY_PATH}")
+    print(f"\n Transcript: {TRANSCRIPT_PATH}")
+    print(f" Summary: {SUMMARY_PATH}")
     return TRANSCRIPT_PATH, SUMMARY_PATH

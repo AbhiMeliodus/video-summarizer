@@ -1,4 +1,4 @@
-# Lightweight Python base — no ML libraries needed, all inference is via Groq API
+﻿# Lightweight Python base — no ML libraries needed, all inference is via Groq API
 FROM python:3.10-slim
 
 # Prevent .pyc files and enable unbuffered logs
