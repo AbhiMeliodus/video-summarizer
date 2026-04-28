@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1
 # Set work directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies (ffmpeg required for audio processing)
 RUN apt-get update && apt-get install -y \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
@@ -21,15 +21,15 @@ RUN pip install -r requirements.txt
 # Copy project files
 COPY . /app/
 
-# Create a non-root user for Choreo
-RUN useradd -u 10014 choreo-user
-RUN chown -R 10014:10014 /app
+# Create a non-root user
+RUN useradd -m appuser
+RUN chown -R appuser:appuser /app
 
 # Set WORKDIR to the Django project root
 WORKDIR /app/videosummarizer
 
 # Switch to the non-root user
-USER 10014
+USER appuser
 
 # Collect static files
 RUN python manage.py collectstatic --noinput
@@ -38,5 +38,4 @@ RUN python manage.py collectstatic --noinput
 EXPOSE 8080
 
 # Run Gunicorn
-# Binding strictly to 8080 to match component.yaml
-CMD ["gunicorn", "videosummarizer.wsgi:application", "--bind", "0.0.0.0:8080", "--workers", "2"]
+CMD ["gunicorn", "videosummarizer.wsgi:application", "--bind", "0.0.0.0:8080", "--workers", "2", "--timeout", "120"]
